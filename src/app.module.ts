@@ -17,7 +17,7 @@ import { Comment } from './community/entities/comment.entity';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { DealModule } from './deal/deal.module';
-import { PaymentsModule } from './payments/payments.module';
+import { Purchase } from './deal/entities/purchase.entity';
 dotenv.config();
 
 @Module({
@@ -29,7 +29,7 @@ dotenv.config();
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [User, UserAccount, Photo, Posts, Comment],
+      entities: [User, UserAccount, Photo, Posts, Comment,Purchase],
       synchronize: true,
       driver: require('mysql2')
     }),
@@ -39,12 +39,7 @@ dotenv.config();
     AwsModule,
     WishlistModule,
     CommunityModule,
-    PaymentsModule,
     DealModule,
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'public'),
-    }),
-    PaymentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

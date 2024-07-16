@@ -87,6 +87,10 @@ export class CommunityService {
     }
 
     async deleteOne(post_id: number): Promise<boolean>{
+        const post = await this.postRepository.findOneBy({post_id});
+        for(const url of post.urls){
+            await this.deleteS3File(url);
+        }
         const result = await this.postRepository.delete(post_id);
         return true;
     }

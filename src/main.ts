@@ -4,9 +4,11 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  // Static files from 'public' directory
-  app.useStaticAssets(join(__dirname, '..', 'public'));
-  await app.listen(3000);
+  const app = await NestFactory.create(AppModule);
+  app.enableCors({
+    origin: 'http://143.248.177.211:5173', // 프론트엔드 서버의 URL
+    credentials: true,
+  });
+  await app.listen(3000, '0.0.0.0');
 }
 bootstrap();

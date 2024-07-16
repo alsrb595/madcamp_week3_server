@@ -19,6 +19,12 @@ export class CommunityController {
         return this.communityService.getAll();
     }
 
+    @Get('/:id')
+    @HttpCode(HttpStatus.OK)
+    async getOne(@Param('id') post_id: number): Promise<PostGetDto>{
+        return this.communityService.getOne(post_id)
+    }
+
 
     @Post('upload')
     @HttpCode(HttpStatus.CREATED)

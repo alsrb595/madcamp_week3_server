@@ -11,6 +11,7 @@ import { AwsModule } from 'src/aws/aws.module';
     AwsModule,
   ],
   controllers: [PhotoController],
-  providers: [PhotoService]
+  providers: [PhotoService],
+  exports: [TypeOrmModule],
 })
 export class PhotoModule {}
