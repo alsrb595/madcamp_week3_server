@@ -17,7 +17,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google'){
         super({ // PassportStrategy 클래스의 생성자를 호출하여 Google OAuth2 전략을 설정
             clientID: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            callbackURL: 'http://localhost:3000/auth/google/callback',
+            callbackURL: 'https://1abb-118-235-93-232.ngrok-free.app/auth/google/callback',
             scope: ['email', 'profile'], // 요청할 프로필 범위
         })
     }

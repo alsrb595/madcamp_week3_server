@@ -3,7 +3,7 @@ import { PhotoController } from './photo.controller';
 import { PhotoService } from './photo.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Photo } from './entities/photo.entity';
-import { AwsModule } from 'src/aws/aws.module';
+import { AwsModule } from '../aws/aws.module'; // 올바른 경로로 수정
 
 @Module({
   imports: [

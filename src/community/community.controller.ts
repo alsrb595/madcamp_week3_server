@@ -37,12 +37,12 @@ export class CommunityController {
     ) {
         return this.communityService.uploadPost(files, postData);
     }
-
     @Post('comment/upload')
     @HttpCode(HttpStatus.CREATED)
     async uploadComment(@Body() commentData: CommentCreateDto): Promise<Comment> {
         return this.communityService.uploadComment(commentData);
     }
+
 
     @Patch("/:id")
     @UseInterceptors(FilesInterceptor('files'))
@@ -59,6 +59,12 @@ export class CommunityController {
     @HttpCode(HttpStatus.OK)
     async searchPost(@Query('q') query: string): Promise<PostGetDto[]>{
         return this.communityService.searchPosts(query);
+    }
+
+    @Delete("/comment/delete")
+    @HttpCode(HttpStatus.OK)
+    async deleteComment(@Body('comment_id') comment_id: number): Promise<boolean>{
+        return this.communityService.deleteComment(comment_id);
     }
 
 }

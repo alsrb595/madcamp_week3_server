@@ -28,10 +28,10 @@ export class DealController {
         return this.dealService.deletePurchase(deleteData);
     }
 
-    // @Get('search')
-    // @HttpCode(HttpStatus.OK)
-    // async searchPurchase(@Query('q') query: string): Promise<Purchase[]> {
-    //     return this.
-    // }
+    @Get('search')
+    @HttpCode(HttpStatus.OK)
+    async searchPurchase(@Query('q') query: string): Promise<Purchase[]> {
+        return this.dealService.searchPurchase(query);
+    }
     
 }

@@ -26,7 +26,7 @@ export class CommunityService {
     ) {}
 
     async getAll(): Promise<PostGetDto[]>{
-        const allPosts = await this.postRepository.find({ relations: ['comments'] });
+        const allPosts = await this.postRepository.find({ relations: ['comments'], order: {created_at: 'DESC'}, });
         return allPosts.map(post => ({
             post_id: post.post_id,
             displayName: post.displayName,
@@ -69,10 +69,10 @@ export class CommunityService {
 
     async uploadComment(commentData: CommentCreateDto): Promise<Comment>{
         const comment = new Comment()
-        comment.content = commentData.content;
         comment.displayName = commentData.displayName;
         comment.post_id = commentData.post_id;
         comment.email = commentData.email;
+        comment.content = commentData.content;
 
         const newComment = this.commentRepository.create(comment);
         return await this.commentRepository.save(newComment);
@@ -131,6 +131,12 @@ export class CommunityService {
             urls: post.urls,
             comments: post.comments,
         }));
+    }
+
+    async deleteComment(comment_id: number): Promise<boolean>{
+        const comment = await this.commentRepository.findOneBy({comment_id})
+        this.commentRepository.delete(comment);
+        return true;
     }
 }
 

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PurchaseCreateDto } from './dto/purchase.dto';
 import { Purchase } from './entities/purchase.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { Photo } from 'src/photo/entities/photo.entity';
 import { User } from 'src/auth/entities/user.entity';
 import { UpdatePurchaseDto } from './dto/updatePurchase.dto';
@@ -66,5 +66,18 @@ export class DealService {
         const purchase = await this.purchaseRepository.findOne({where: {consumer_email: deleteData.consumer_email, photo_id: deleteData.photo_id}});
         await this.purchaseRepository.delete(purchase);
         return true;
+    }
+
+    async searchPurchase(query: string): Promise<Purchase[]>{
+        const purchases = await this.purchaseRepository.find({
+            where: [
+                { consumer_email: Like(`%${query}%`) },
+                { photo: { pictured_by: Like(`%${query}%`)}},
+                { photo: { filename: Like(`%${query}%`)}},
+                { photo: { tags: Like(`%${query}%`)}}
+            ],
+            relations: ["photo"],
+        })
+        return purchases;
     }
 }

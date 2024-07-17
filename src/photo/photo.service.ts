@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsWhere, Repository } from 'typeorm';
+import { FindOptionsWhere, Like, Repository } from 'typeorm';
 import { Photo } from './entities/photo.entity';
 import { S3 } from 'aws-sdk';
 import { PhotoDto } from './dto/photo.dto';
@@ -98,5 +98,54 @@ export class PhotoService {
         await this.photoRepository.delete(where);
 
         return photo;
+    }
+
+    async searchPhoto(query: string): Promise<PhotoGetDto[]>{
+        const photos = await this.photoRepository.find({
+            where: [
+                { filename: Like(`%${query}%`) },
+                { pictured_by: Like(`%${query}%`) },
+                { description: Like(`%${query}%`) },
+                { tags: Like(`%${query}%`) },
+                { location: Like(`%${query}%`) },
+            ]
+        });
+        return photos.map(photo => ({
+            photo_id: photo.photo_id,
+            filename: photo.filename,
+            pictured_by: photo.pictured_by,
+            url: photo.url,
+            mimetype: photo.mimetype,
+            price: photo.price,
+            description: photo.description,
+            tags: photo.tags,
+            location: photo.location
+        }))
+    }
+
+    async getAllPhotosByEmail(pictured_by: string): Promise<PhotoGetDto[]> {
+        const photos = await this.photoRepository.find({ where: { pictured_by } });
+        return photos.map(photo => ({
+            photo_id: photo.photo_id,
+            filename: photo.filename,
+            pictured_by: photo.pictured_by,
+            url: photo.url,
+            mimetype: photo.mimetype,
+            price: photo.price,
+            description: photo.description,
+            tags: photo.tags,
+            location: photo.location
+        }))
+    }
+
+    async getTags(): Promise<string[]>  {
+        const photos = await this.photoRepository.find();
+        const tagSet = new Set<string>();
+
+        photos.forEach(photo => {
+            photo.tags.forEach(tag => tagSet.add(tag));
+        })
+
+        return Array.from(tagSet)
     }
 }

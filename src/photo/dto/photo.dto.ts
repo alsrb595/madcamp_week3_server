@@ -1,5 +1,5 @@
 import { IsString, IsNotEmpty, IsOptional, IsNumber } from 'class-validator';
-
+import { Type } from 'class-transformer';
 
 export class PhotoDto{
     @IsString()
@@ -16,11 +16,12 @@ export class PhotoDto{
 
     
     @IsString()
-    @IsNotEmpty()
+    @IsOptional()
     mimetype: string;
     
     @IsNumber()
     @IsNotEmpty()
+    @Type(() => Number)
     price: number;
     
     @IsString()

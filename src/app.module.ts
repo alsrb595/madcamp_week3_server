@@ -18,6 +18,8 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { DealModule } from './deal/deal.module';
 import { Purchase } from './deal/entities/purchase.entity';
+import { Cart } from './wishlist/entities/wishlist.entity';
+import { CartItem } from './wishlist/entities/wishItem.entity';
 dotenv.config();
 
 @Module({
@@ -29,7 +31,7 @@ dotenv.config();
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [User, UserAccount, Photo, Posts, Comment,Purchase],
+      entities: [User, UserAccount, Photo, Posts, Comment, Purchase, Cart, CartItem],
       synchronize: true,
       driver: require('mysql2')
     }),

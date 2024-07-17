@@ -4,6 +4,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "./entities/user.entity";
 import { Repository } from "typeorm";
 import { UserGetDto } from "./dto/user.dto";
+import { UserUpdateDto } from "./dto/userUpdate.dto";
 
 @Injectable()
 export class UserService{
@@ -44,6 +45,13 @@ export class UserService{
             photos: user.photos,
             posts: user.posts
         } 
+    }
+
+    async updateUser(email: string, updateData: UserUpdateDto): Promise<User> {
+        const user = await this.userRepository.findOneBy({email})
+        const updateUser = this.userRepository.merge(user, updateData)
+        const result = this.userRepository.save(updateUser);
+        return result;
     }
 }
 //this는 UserService 클래스의 현재 인스턴스를 가리킵니다.
